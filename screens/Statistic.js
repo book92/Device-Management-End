@@ -27,7 +27,7 @@ const BLUE_COLOR = '#0000CD';
 const BLACK_COLOR = '#000000';
 
 const formatSpecifications = (specs) => {
-  if (!specs || typeof specs !== 'object') return 'N/A';
+  if (!specs || typeof specs !== 'object') return 'Không có thông tin';
   return Object.entries(specs)
     .map(([key, value]) => `${key}: ${value}`)
     .join(' \n');
@@ -363,14 +363,14 @@ const Statistic = () => {
             ['STT', 'Tên thiết bị', 'Phòng', 'Tên người dùng', 'Người báo lỗi', 'Ngày báo cáo', 'Ngày sửa', 'Tình trạng', 'Mô tả', 'Số lỗi'],
             ...additionalData.map((item, index) => [
               index + 1,
-              item.deviceName || 'N/A',
-              item.deviceRoom || 'N/A',
-              item.userName || 'N/A',
-              item.reportedBy || 'N/A',
-              item.reportDate || 'N/A',
-              item.fixDate || 'N/A',
-              item.status || 'N/A',
-              item.description || 'N/A',
+              item.deviceName || 'Không có thông tin',
+              item.deviceRoom || 'Không có thông tin',
+              item.userName || 'Không có thông tin',
+              item.reportedBy || 'Không có thông tin',
+              item.reportDate || 'Không có thông tin',
+              item.fixDate || 'Không có thông tin',
+              item.status || 'Không có thông tin',
+              item.description || 'Không có thông tin',
               item.errorCount || 0
             ])
           ];
@@ -382,16 +382,16 @@ const Statistic = () => {
           ];
           additionalData.forEach((dept, deptIndex) => {
             if (dept.users.length === 0) {
-              excelData.push([deptIndex + 1, dept.department, dept.userCount, 'N/A', 'N/A', 'N/A']);
+              excelData.push([deptIndex + 1, dept.department, dept.userCount, 'Không có thông tin', 'Không có thông tin', 'Không có thông tin']);
             } else {
               dept.users.forEach((user, userIndex) => {
                 excelData.push([
                   deptIndex + 1,
                   dept.department,
                   dept.userCount,
-                  user.name,
-                  user.email,
-                  user.role
+                  user.name || 'Không có thông tin',
+                  user.email || 'Không có thông tin',
+                  user.role || 'Không có thông tin'
                 ]);
               });
             }
@@ -408,10 +408,10 @@ const Statistic = () => {
                 deptIndex + 1,
                 dept.department,
                 dept.deviceCount,
-                device.name,
-                device.type,
-                device.user,
-                device.email
+                device.name || 'Không có thông tin',
+                device.type || 'Không có thông tin',
+                device.user || 'Không có thông tin',
+                device.email || 'Không có thông tin'
               ]);
             });
           });
@@ -425,15 +425,15 @@ const Statistic = () => {
             userInfo.devices.forEach((device) => {
               excelData.push([
                 userIndex + 1,
-                userInfo.user,
-                device.email,
+                userInfo.user || 'Không có thông tin',
+                device.email || 'Không có thông tin',
                 userInfo.deviceCount,
-                device.name,
-                device.type,
-                device.department,
-                device.specifications,
-                device.image,
-                device.note
+                device.name || 'Không có thông tin',
+                device.type || 'Không có thông tin',
+                device.department || 'Không có thông tin',
+                device.specifications || 'Không có thông tin',
+                device.image || 'Không có thông tin',
+                device.note || 'Không có thông tin'
               ]);
             });
           });
@@ -536,18 +536,18 @@ const Statistic = () => {
             // Chuyển đổi ngày từ chuỗi sang định dạng ngày
             const parseDate = (dateString) => {
               const date = new Date(dateString);
-              return isNaN(date) ? 'N/A' : date.toLocaleDateString();
+              return isNaN(date) ? 'Không có thông tin' : date.toLocaleDateString();
             };
 
             additionalData.push({
               deviceName: error.deviceName,
-              deviceRoom: deviceInfo?.departmentName || 'N/A',
-              userName: userInfo?.name || deviceInfo?.user || 'N/A',
-              reportedBy: error.userreport || 'N/A',
+              deviceRoom: deviceInfo?.departmentName || 'Không có thông tin',
+              userName: userInfo?.name || deviceInfo?.user || 'Không có thông tin',
+              reportedBy: error.userreport || 'Không có thông tin',
               reportDate: parseDate(error.reportday),
               fixDate: parseDate(error.fixday),
-              status: error.state || 'N/A',
-              description: error.description || 'N/A',
+              status: error.state || 'Không có thông tin',
+              description: error.description || 'Không có thông tin',
               errorCount: data.datasets[0].data[data.labels.indexOf(error.deviceName)] || 1
             });
           }
@@ -563,9 +563,9 @@ const Statistic = () => {
               department,
               userCount: count,
               users: departmentUsers.map(user => ({
-                name: user.fullname || 'N/A',
-                email: user.email || 'N/A',
-                role: user.role || 'N/A'
+                name: user.fullname || 'Không có thông tin',
+                email: user.email || 'Không có thông tin',
+                role: user.role || 'Không có thông tin'
               }))
             });
           }
@@ -581,10 +581,10 @@ const Statistic = () => {
               department,
               deviceCount: count,
               devices: departmentDevices.map(device => ({
-                name: device.name || 'N/A',
-                type: device.type || 'N/A',
-                user: device.user || 'N/A',
-                email: device.userEmail || 'N/A'
+                name: device.name || 'Không có thông tin',
+                type: device.type || 'Không có thông tin',
+                user: device.user || 'Không có thông tin',
+                email: device.userEmail || 'Không có thông tin'
               }))
             });
           }
@@ -600,13 +600,13 @@ const Statistic = () => {
               user,
               deviceCount: count,
               devices: userDevices.map(device => ({
-                name: device.name || 'N/A',
-                email: device.userEmail || 'N/A',
-                type: device.type || 'N/A',
-                department: device.departmentName || 'N/A',
+                name: device.name || 'Không có thông tin',
+                email: device.userEmail || 'Không có thông tin',
+                type: device.type || 'Không có thông tin',
+                department: device.departmentName || 'Không có thông tin',
                 specifications: formatSpecifications(device.specifications), // Sử dụng hàm formatSpecifications ở đây
-                image: device.image || 'N/A',
-                note: device.note || 'N/A'
+                image: device.image || 'Không có thông tin',
+                note: device.note || 'Không có thông tin'
               }))
             });
           }
