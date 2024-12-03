@@ -21,6 +21,7 @@ const DeviceDetail = ({ route, navigation }) => {
   const [departmentName, setDepartmentName] = useState('');
   const [departments, setDepartments] = useState([]);
   const [user, setUser] = useState('');  
+  const [userEmail, setUserEmail] = useState('');
   const [users, setUsers] = useState([]);  
   const [specifications, setSpecifications] = useState({});
   const [note, setNote] = useState('');
@@ -49,8 +50,9 @@ const DeviceDetail = ({ route, navigation }) => {
         try {
           const snapshot = await firestore().collection("USERS").get();
           const userList = snapshot.docs.map(doc => ({
-            label: doc.data().fullname,
-            value: doc.data().fullname,
+            label: `${doc.data().fullname} (${doc.data().email})`,
+            value: doc.data().email,
+            name: doc.data().fullname
           }));
           setUsers(userList);
         } catch (error) {
@@ -99,6 +101,14 @@ const DeviceDetail = ({ route, navigation }) => {
     setQrValue(qrUrl);
   };
 
+  const handleUserSelect = (email) => {
+    setUser(email);
+    const selectedUser = users.find(user => user.value === email);
+    if (selectedUser) {
+        setUserEmail(selectedUser.value);
+    }
+  };
+
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -117,7 +127,8 @@ const DeviceDetail = ({ route, navigation }) => {
         name,
         type,
         departmentName,
-        user,
+        user: users.find(u => u.value === user)?.name || '',
+        userEmail,
         specifications,
         note,
       };
@@ -384,7 +395,7 @@ const DeviceDetail = ({ route, navigation }) => {
         <Dropdown
           options={users}
           value={user}
-          onSelect={setUser}
+          onSelect={handleUserSelect}
           mode="outlined"
           style={{ color: '#0000FF' }}
         />

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 import { Searchbar, Button, IconButton } from 'react-native-paper';
 import * as XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
-import { Alert } from 'react-native';
 
 const BLUE_COLOR = '#0000CD';
 
@@ -137,8 +136,8 @@ const StaticList = ({ chartData, onClose }) => {
     });
   };
 
-  const handleExportToExcel = async () => {
-    const title = `${
+  const handleExportToExcel = () => {
+    const title = `Danh sách ${
       chartData.type === 'error' ? 'lỗi' : 
       chartData.type === 'userByRoom' ? 'người dùng' : 
       chartData.type === 'deviceByRoom' || chartData.type === 'deviceByUser' ? 'thiết bị' : 
@@ -219,10 +218,112 @@ const StaticList = ({ chartData, onClose }) => {
           },
           {
             text: "Xác nhận",
-            onPress: () => exportToExcel(filteredItems, title, selectedStartDate, selectedEndDate)
+            onPress: () => exportToExcel(filteredItems, title)
           }
         ]
       );
+    }
+  };
+
+  const exportToExcel = async (data, title, startDate, endDate) => {
+    try {
+      let excelData;
+      
+      switch (chartData.type) {
+        case 'error':
+          excelData = [
+            ['STT', 'Tên thiết bị', 'Phòng', 'Tên người dùng', 'Người báo lỗi', 'Ngày báo cáo', 'Ngày sửa', 'Tình trạng', 'Mô tả'],
+            ...data.map((item, index) => [
+              index + 1,
+              item.deviceName || 'Không có thông tin',
+              item.deviceRoom || 'Không có thông tin',
+              item.userName || 'Không có thông tin',
+              item.userreport || 'Không có thông tin',
+              item.reportday || 'Không có thông tin',
+              item.fixday || 'Không có thông tin',
+              item.state || 'Không có thông tin',
+              item.description || 'Không có thông tin'
+            ])
+          ];
+          break;
+
+        case 'userByRoom':
+          excelData = [
+            ['STT', 'Họ và tên', 'Email', 'Vai trò', 'Phòng'],
+            ...data.map((item, index) => [
+              index + 1,
+              item.fullname || 'Không có thông tin',
+              item.email || 'Không có thông tin',
+              item.role || 'Không có thông tin',
+              chartData.label || 'Không có thông tin'
+            ])
+          ];
+          break;
+
+        case 'deviceByRoom':
+        case 'deviceByUser':
+          excelData = [
+            ['STT', 'Tên thiết bị', 'Loại thiết bị', 'Người dùng', 'Email', 'Thông số kỹ thuật', 'Ghi chú'],
+            ...data.map((item, index) => [
+              index + 1,
+              item.name || 'Không có thông tin',
+              item.type || 'Không có thông tin',
+              item.user || 'Không có thông tin',
+              item.userEmail || 'Không có thông tin',
+              item.specifications ? JSON.stringify(item.specifications) : 'Không có thông tin',
+              item.note || 'Không có thông tin'
+            ])
+          ];
+          break;
+      }
+
+      const ws = XLSX.utils.aoa_to_sheet(excelData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+      // Định dạng cột
+      const columnWidths = [
+        { wch: 5 },  // STT
+        { wch: 30 }, // Tên
+        { wch: 20 }, // Loại/Email
+        { wch: 30 }, // Người dùng/Vai trò
+        { wch: 30 }, // Email/Phòng
+        { wch: 50 }, // Thông số kỹ thuật
+        { wch: 30 }  // Ghi chú
+      ];
+      ws['!cols'] = columnWidths;
+
+      // Định dạng header
+      const headerRange = XLSX.utils.decode_range(ws['!ref']);
+      for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+        const address = XLSX.utils.encode_cell({ r: 0, c: C });
+        ws[address].s = {
+          font: { bold: true },
+          alignment: { vertical: 'center', horizontal: 'center', wrapText: true },
+          fill: { fgColor: { rgb: "FFFFAA00" } }
+        };
+      }
+
+      // Định dạng data cells
+      for (let R = 1; R <= headerRange.e.r; ++R) {
+        for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+          const address = XLSX.utils.encode_cell({ r: R, c: C });
+          if (!ws[address]) continue;
+          ws[address].s = {
+            alignment: { vertical: 'center', horizontal: 'left', wrapText: true }
+          };
+        }
+      }
+
+      const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
+      const fileName = `${title.replace(/\s+/g, '_')}_${new Date().getTime()}.xlsx`;
+      const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+      await RNFS.writeFile(filePath, wbout, 'ascii');
+
+      Alert.alert('Thành công', `File đã được lưu vào thư mục Downloads với tên ${fileName}`);
+    } catch (error) {
+      console.error('Error in Excel export:', error);
+      Alert.alert('Lỗi', 'Vui lòng mở quyền truy cập bộ nhớ của ứng dụng');
     }
   };
 
