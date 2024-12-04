@@ -80,7 +80,6 @@ const CreateAccount = async (fullname, email, password, phone, address, departme
             {
                 text: "Xác nhận",
                 onPress: () => {
-                    // Ensure navigation is defined
                     if (navigation) {
                         navigation.navigate("Login");
                     } else {

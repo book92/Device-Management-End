@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: BLUE_COLOR,
-    marginVertical: 10, // Add some vertical margin for spacing
+    marginVertical: 10,
   },
 });
 

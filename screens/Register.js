@@ -175,7 +175,7 @@ export default Register
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff', // Thêm màu nền trắng
+        backgroundColor: '#fff',
     },
     text: {
         textAlign: 'center',

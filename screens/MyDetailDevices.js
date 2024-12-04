@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
-    marginBottom: 20, // Reduced bottom margin
+    marginBottom: 20,
   },
   button: {
     flex: 1,
@@ -608,7 +608,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   qrContainer: {
-    // Remove alignItems: 'center' if it exists
   },
   exportButton: {
     backgroundColor: '#0000CD',
@@ -644,12 +643,12 @@ const styles = StyleSheet.create({
   },
   backButtonContainer: {
     alignItems: 'center',
-    marginBottom: 50, // Add margin at the bottom
+    marginBottom: 50,
   },
   backButton: {
     backgroundColor: '#0000CD',
-    paddingHorizontal: 20, // Increased horizontal padding
-    width: '50%', // Set width to 50% of the container
+    paddingHorizontal: 20,
+    width: '50%',
   },
 });
 

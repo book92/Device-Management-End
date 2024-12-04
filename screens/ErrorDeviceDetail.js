@@ -36,7 +36,6 @@ const ErrorDeviceDetail = ({ route, navigation }) => {
     const [userreport, setUserreport] = React.useState(item.userreport);
 
     const handleUpdate = () => {
-        // Show a confirmation alert
         Alert.alert(
             "Xác nhận cập nhật",
             "Bạn đã hoàn tất sửa chữa thiết bị này?",
@@ -139,10 +138,10 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 16,
         borderWidth: 1,
-        borderColor: '#4169E1',  // Royal Blue
+        borderColor: '#4169E1',
         borderRadius: 5,
         marginVertical: 5,
-        backgroundColor: '#FFFFFF',  // Change background to white
+        backgroundColor: '#FFFFFF',
     },
     multilineInput: {
         height: 100,
@@ -155,13 +154,13 @@ const styles = StyleSheet.create({
     button: {
         flex: 1,
         marginHorizontal: 5,
-        backgroundColor: '#0000FF',  // Blue
+        backgroundColor: '#0000FF',
     },
     cancelButton: {
-        backgroundColor: '#FF0000',  // Red
+        backgroundColor: '#FF0000',
     },
     buttonLabel: {
-        color: 'white',  // Set button text color to white
+        color: 'white',
     },
 });
 

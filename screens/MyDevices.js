@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore'; 
 import { useMyContextController } from '../store';
-import { Searchbar } from 'react-native-paper'; // Import Searchbar
+import { Searchbar } from 'react-native-paper';
 
 const BLUE_COLOR = '#0000CD';
 
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: BLUE_COLOR,
-    marginVertical: 10, // Add some vertical margin for spacing
+    marginVertical: 10,
   },
 });
 

@@ -729,7 +729,7 @@ const Statistic = () => {
           {selectedChartData && (
             <StaticList
               chartData={selectedChartData}
-              onClose={() => setModalVisible(false)} // Ensure this is set correctly
+              onClose={() => setModalVisible(false)}
             />
           )}
         </View>

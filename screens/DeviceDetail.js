@@ -648,7 +648,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   qrContainer: {
-    // Remove alignItems: 'center' from here
   },
   exportButton: {
     backgroundColor: '#0000CD',

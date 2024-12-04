@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 1, // Add some space above the button
-        marginBottom: 50, // Add some space below the button
+        marginTop: 1,
+        marginBottom: 50,
     },
     button: {
         flex: 1,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     contentScrollView: {
-        maxHeight: '80%',  // Adjust this value as needed
+        maxHeight: '80%',
     },
 });
 

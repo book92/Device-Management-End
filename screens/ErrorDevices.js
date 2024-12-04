@@ -28,7 +28,7 @@ const ErrorDevices = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigation = useNavigation();
   const route = useRoute();
-  const { devices = [] } = route.params; // Provide a default empty array
+  const { devices = [] } = route.params;
   const ERROR = firestore().collection('ERROR');
 
   useEffect(() => {
