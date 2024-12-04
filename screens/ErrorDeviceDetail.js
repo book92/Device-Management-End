@@ -54,11 +54,16 @@ const ErrorDeviceDetail = ({ route, navigation }) => {
 
     const updateDevice = async () => {
         try {
-            await firestore().collection("ERROR").doc(item.id).update({
+            const updateData = {
                 state: "Đã sửa",
                 fixday: new Date().toString(),
-                deviceRoom: item.deviceRoom,
-            });
+            };
+            
+            if (item.deviceRoom) {
+                updateData.deviceRoom = item.deviceRoom;
+            }
+
+            await firestore().collection("ERROR").doc(item.id).update(updateData);
             Alert.alert("Cập nhật thành công!");
             navigation.goBack();
         } catch (error) {
