@@ -363,6 +363,7 @@ const DeviceDetail = ({ route, navigation }) => {
           style={[styles.input, { color: '#0000FF' }]}
           value={name}
           onChangeText={setName}
+          editable={false}
         />
       ) : (
         <Text style={[styles.value, { color: '#0000FF' }]}>{device.name}</Text>
