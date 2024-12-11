@@ -73,7 +73,8 @@ const DeviceDetail = ({ route, navigation }) => {
         setName(deviceData.name);
         setType(deviceData.type);
         setDepartmentName(deviceData.departmentName);
-        setUser(deviceData.user || '');
+        setUser(deviceData.userEmail || '');
+        setUserEmail(deviceData.userEmail || '');
         setSpecifications(deviceData.specifications || {});
         setNote(deviceData.note || '');
         setQR(deviceData.image || '');
@@ -103,10 +104,7 @@ const DeviceDetail = ({ route, navigation }) => {
 
   const handleUserSelect = (email) => {
     setUser(email);
-    const selectedUser = users.find(user => user.value === email);
-    if (selectedUser) {
-        setUserEmail(selectedUser.value);
-    }
+    setUserEmail(email);
   };
 
   const handleSave = async () => {
@@ -395,13 +393,13 @@ const DeviceDetail = ({ route, navigation }) => {
       {isEditing ? (
         <Dropdown
           options={users}
-          value={user}
+          value={user || device.userEmail}
           onSelect={handleUserSelect}
           mode="outlined"
           style={{ color: '#0000FF' }}
         />
       ) : (
-        <Text style={[styles.value, { color: '#0000FF' }]}>{device.user}</Text>
+        <Text style={[styles.value, { color: '#0000FF' }]}>{device.user || 'Chưa có người dùng'}</Text>
       )}
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Thông số kỹ thuật:</Text>
